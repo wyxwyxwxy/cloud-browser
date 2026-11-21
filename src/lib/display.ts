@@ -26,8 +26,10 @@ const defaultInfo: DisplayInfo = {
 
 function detectPlatform(): Platform {
   const w = window as any
-  if (w.Capacitor?.getPlatform?.() === 'android' || w.androidScreenCompat) return 'android'
-  if (w.process?.versions?.electron || navigator.userAgent.includes('Electron')) return 'electron'
+  try {
+    if (w.Capacitor?.getPlatform?.() === 'android' || w.capacitor?.platform === 'android' || w.androidScreenCompat || navigator.userAgent.includes('Android')) return 'android'
+    if (w.process?.versions?.electron || navigator.userAgent.includes('Electron')) return 'electron'
+  } catch {}
   return 'web'
 }
 

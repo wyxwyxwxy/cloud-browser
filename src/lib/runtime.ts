@@ -10,7 +10,15 @@ const KEY = 'cb-server-config'
 
 function isAndroid(): boolean {
   const w = window as any
-  return w.Capacitor?.getPlatform?.() === 'android' || !!w.androidScreenCompat || location.protocol === 'capacitor:'
+  // Capacitor 8 不一定注入 window.Capacitor，需多重兜底检测
+  try {
+    if (w.Capacitor?.getPlatform?.() === 'android') return true
+    if (w.capacitor?.platform === 'android') return true
+    if (w.androidScreenCompat) return true
+    if (navigator.userAgent.includes('Android')) return true
+    if (location.protocol === 'capacitor:' || location.protocol === 'https:' && location.hostname === 'localhost' && navigator.userAgent.includes('wv')) return true
+  } catch {}
+  return false
 }
 
 export function getServerConfig(): ServerConfig | null {

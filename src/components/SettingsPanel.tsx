@@ -173,9 +173,9 @@ export default function SettingsPanel(p: Props) {
                   ['会话次数', String(p.usage.sessions)],
                   ['累计时长', fmtDur(p.usage.totalSeconds)],
                   ['串流帧数', p.usage.frames.toLocaleString()],
-                  ['估计费用', '$' + p.usage.estimatedCost.toFixed(3)],
+                  ['估计费用', '$' + Number(p.usage?.estimatedCost || 0).toFixed(3)],
                   ['交互事件', p.usage.inputs.toLocaleString()],
-                  ['传输估算', (p.usage.bytes / 1024 / 1024).toFixed(1) + ' MB'],
+                  ['传输估算', (Number(p.usage?.bytes || 0) / 1024 / 1024).toFixed(1) + ' MB'],
                 ].map(([k, v]) => (
                   <div key={k} className="card">
                     <p className="text-[11px] text-slate-500">{k}</p>

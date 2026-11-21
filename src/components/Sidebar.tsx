@@ -163,8 +163,8 @@ export default function Sidebar(p: Props) {
       {/* 底部：用量 + 设置 */}
       <div className="border-t border-line p-2.5">
         <div className="mb-2 flex items-center justify-between rounded-lg bg-ink px-2.5 py-2 text-[11px]">
-          <span className="flex items-center gap-1 text-slate-500"><Clock3 className="h-3 w-3" />{fmtDur(p.usage.totalSeconds)}</span>
-          <span className="flex items-center gap-1 text-emerald-400"><Coins className="h-3 w-3" />${p.usage.estimatedCost.toFixed(3)}</span>
+          <span className="flex items-center gap-1 text-slate-500"><Clock3 className="h-3 w-3" />{fmtDur(Number(p.usage?.totalSeconds) || 0)}</span>
+          <span className="flex items-center gap-1 text-emerald-400"><Coins className="h-3 w-3" />${Number(p.usage?.estimatedCost || 0).toFixed(3)}</span>
           <span className="text-slate-500">{p.usage.sessions} 次</span>
         </div>
         <button onClick={p.onOpenSettings} className="btn w-full justify-start">

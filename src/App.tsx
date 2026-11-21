@@ -57,7 +57,13 @@ export default function App() {
       const [cfg, ks, st, hi, us] = await Promise.all([
         API.config(), API.keyStatus(deviceId), API.settings(deviceId), API.history(deviceId), API.usage(deviceId),
       ])
-      setMode(cfg.mode); setKeyStatus(ks); setSettings({ ...DEFAULT_SETTINGS, ...st }); setHistory(hi); setUsage(us)
+      // 校验返回结构，避免静态托管 SPA fallback 把 HTML 当数据导致字段缺失
+      const safeUsage = (us && typeof us === 'object' && typeof us.estimatedCost === 'number') ? us : null
+      setMode(cfg?.mode || 'tinyfish')
+      setKeyStatus(ks && typeof ks.configured === 'boolean' ? ks : { configured: false, masked: '' })
+      setSettings({ ...DEFAULT_SETTINGS, ...(st && typeof st === 'object' ? st : {}) })
+      setHistory(Array.isArray(hi) ? hi : [])
+      if (safeUsage) setUsage((u) => ({ ...u, ...safeUsage }))
     } catch {}
   }, [deviceId])
 
@@ -87,7 +93,14 @@ export default function App() {
         showToast(m.ip.startsWith('未能') ? m.ip : `出口 IP：${m.ip} · ${m.proxyCountry}`)
         break
       case 'usageLive':
-        setUsage((u) => ({ ...u, totalSeconds: m.seconds, frames: m.frames, inputs: m.inputs, bytes: m.bytes, estimatedCost: m.cost }))
+        setUsage((u) => ({
+          ...u,
+          totalSeconds: Number(m.seconds) || 0,
+          frames: Number(m.frames) || 0,
+          inputs: Number(m.inputs) || 0,
+          bytes: Number(m.bytes) || 0,
+          estimatedCost: typeof m.cost === 'number' ? m.cost : 0,
+        }))
         break
       case 'settings':
         setSettings((s) => ({ ...s, ...m.settings }))
