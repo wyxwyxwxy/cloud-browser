@@ -1,3 +1,6 @@
+> 🔗 **GitHub 仓库**：https://github.com/wyxwyxwxy/cloud-browser  
+> 📦 **预编译安装包（APK / EXE）下载**：https://github.com/wyxwyxwxy/cloud-browser/releases/tag/v1.0.0
+
 # CloudBrowser · 云端远程浏览器
 
 一个把**云端无头 Chromium 实时串流到浏览器**的网站。你只需注册 TinyFish、填入 API Key、点击启动，即可在手机（横屏）或电脑上获得一个可点击、可输入、可缩放的完整远程浏览器。
