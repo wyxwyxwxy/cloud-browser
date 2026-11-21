@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  cloud-browser:
+    build: .
+    container_name: cloud-browser
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - BROWSER_MODE=tinyfish
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-change-this-secret}
+      - DATA_FILE=/app/data/store.json
+    volumes:
+      - ./data:/app/data

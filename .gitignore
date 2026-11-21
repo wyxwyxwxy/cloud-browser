@@ -1,0 +1,31 @@
+# 依赖
+node_modules/
+
+# 前端构建产物（由源码构建）
+dist/
+
+# 运行时数据 / 密钥（敏感，绝不入库）
+data/store.json
+.env
+.env.local
+
+# 日志与系统文件
+*.log
+.DS_Store
+
+# Android 构建缓存与本地配置
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/release/
+
+# Electron 构建中间产物（大文件，改为 Release 托管）
+release/
+dist-release/
+
+# 缓存
+.cache/
+*.tsbuildinfo

@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --safe-top: 0px; --safe-bottom: 0px; --safe-left: 0px; --safe-right: 0px;
+  --vh: 1vh; --vw: 1vw;
+}
+* { -webkit-tap-highlight-color: transparent; }
+html, body, #root { height: 100%; margin: 0; }
+/* 异形屏：整体内容避开刘海、圆角、曲面边缘 */
+body.native-app #root {
+  padding-top: env(safe-area-inset-top, var(--safe-top));
+  padding-bottom: env(safe-area-inset-bottom, var(--safe-bottom));
+  padding-left: env(safe-area-inset-left, var(--safe-left));
+  padding-right: env(safe-area-inset-right, var(--safe-right));
+  box-sizing: border-box;
+}
+/* 曲面屏：左右额外内收，防止画面被弯曲边缘裁切/误触 */
+body.curved #root { padding-left: calc(var(--safe-left) + 12px); padding-right: calc(var(--safe-right) + 12px); }
+/* 方形屏 / 折叠屏展开：侧边栏适当加宽，画面保持居中 */
+body.squareish aside { min-width: 240px; }
+body.foldable .icon-btn { min-height: 40px; }
+body {
+  background: #0b0e14;
+  color: #e6e9f0;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition
+           border border-line bg-panel2 text-slate-200 hover:border-brand/60 hover:text-white active:scale-[.98];
+  }
+  .btn-primary {
+    @apply border-transparent bg-brand text-white hover:bg-brand-soft shadow-glow;
+  }
+  .btn-ghost { @apply border-transparent bg-transparent hover:bg-white/5; }
+  .icon-btn {
+    @apply inline-flex items-center justify-center h-9 w-9 rounded-lg border border-line bg-panel2
+           text-slate-300 hover:border-brand/60 hover:text-white active:scale-95 transition;
+  }
+  .field {
+    @apply w-full rounded-lg border border-line bg-ink px-3 py-2.5 text-sm text-slate-100
+           outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition;
+  }
+  .card { @apply rounded-xl border border-line bg-panel p-4; }
+  .chip { @apply inline-flex items-center gap-1 rounded-md bg-white/5 px-2 py-1 text-xs text-slate-300; }
+  .label { @apply mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500; }
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #2a3346; border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* 隐藏键盘代理输入框：定位在视口内但不显示，避免浏览器因 display:none 拒绝聚焦 */
+#keyboard-proxy {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: 0;
+  padding: 0;
+}
